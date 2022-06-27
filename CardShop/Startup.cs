@@ -1,6 +1,9 @@
+using CardShop.Datos;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,7 +26,18 @@ namespace CardShop
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(ConfiguracionCookie);
             services.AddControllersWithViews();
+            services.AddDbContext<BaseDatos>(options => options.UseSqlite(@"filename = C:\basetest\BaseDeDatos.db"));
+        }
+
+        private void ConfiguracionCookie(CookieAuthenticationOptions opciones)
+        {
+            opciones.LoginPath = "/Usuarios/Ingresar";
+            opciones.AccessDeniedPath = "/Usuarios/NoAutorizado";
+            opciones.LogoutPath = "/Usuarios/Salir";
+            opciones.ExpireTimeSpan = System.TimeSpan.FromMinutes(10);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -35,7 +49,7 @@ namespace CardShop
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler(" / Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
@@ -43,6 +57,8 @@ namespace CardShop
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
@@ -52,6 +68,8 @@ namespace CardShop
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            app.UseCookiePolicy();
         }
     }
 }

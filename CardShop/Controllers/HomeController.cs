@@ -23,6 +23,19 @@ namespace CardShop.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult IndexIngreso()
+        {
+
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult IndexAdmin()
+        {
+
+            return View();
+        }
         public IActionResult Privacy()
         {
             return View();
