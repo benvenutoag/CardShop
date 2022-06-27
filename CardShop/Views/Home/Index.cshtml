@@ -3,6 +3,46 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-5 fw-bold">Carrito App</h1>
+    <div class="col-lg-6 mx-auto">
+
+        @if (!User.Identity.IsAuthenticated)
+        {
+            <p class="lead mb-4">Bienvenido a la mejor aplicación de compras de comida</p>
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <a class="btn btn btn-outline-primary btn-lg px-4 gap-3 m-1" asp-area="" asp-controller="Usuarios" asp-action="Ingresar">Ingresar</a>
+                <a class="btn btn btn-outline-secondary btn-lg px-4 gap-3 m-1" asp-area="" asp-controller="Usuarios" asp-action="Create">Registrarse</a>
+            </div>
+        }
+        else if (User.IsInRole("ADMIN"))
+        {
+            <p class="lead mb-4">Bienvenido administrador: <b> @User.FindFirst("NombreUsuario").Value</b></p>
+            <a class="btn btn btn-outline-primary btn-lg px-4 gap-3 m-1" asp-area="" asp-controller="Home" asp-action="IndexAdmin">Administrar</a>
+        }
+        else
+        {
+            <p class="lead mb-4">Bienvenido <b> @User.FindFirst("NombreUsuario").Value</b>, qué vas a pedir hoy?</p>
+            @*<div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <a class="btn btn btn-outline-primary btn-lg px-4 gap-3" asp-area="" asp-controller="Productos" asp-action="Index">Comprar</a>
+            </div>*@
+
+            <div class="text-center">
+                <a align="left" href="@Url.Action("Index", "Productoes")" class="elements">
+                    <img src="~/Img/Menu-Foto2.jpg" width="300">
+                    Productos
+                </a>
+                <a align="rigth" href="@Url.Action("CarritoUsuario", "Carritos")" class="elements">
+                    <img src="~/Img/Carrito.png" width="300" />
+                    Ver Carrito
+                </a>
+
+
+
+
+
+        
+            </div>
+        }
+     </div>
+
 </div>

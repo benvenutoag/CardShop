@@ -1,0 +1,43 @@
+﻿@{
+    ViewData["Title"] = "Home Page Admin";
+}
+
+<section class="text-center">
+    <div class="text-center">
+
+        <h1 class="display-4">Administrador</h1>
+        <br />
+
+
+        <div class="banner">
+            <a align="left" href="@Url.Action("Index", "Productoes")" class="elements">
+                <img src="~/Img/Menu-Foto2.jpg" height="160" width="300">
+            </a>
+            <b>Productos</b>
+
+            <br />
+            <br />
+            <br />
+            <a href="@Url.Action("Index", "Usuario")" class="elements">
+                <img src="~/Img/Usuarios.jpg" height="160" width="300">
+            </a>
+            <b>Usuarios</b>
+        </div>
+
+        <!--Imágenes en Horizontal arreglar css-->
+        <!--<br />
+         <div class="banner">
+             <a align="left" href="@Url.Action("Index", "Productos")" class="elements">
+                  <img src="~/Img/Menu-Foto2.jpg" height="160" width="300">
+             </a>
+
+             <a href="@Url.Action("Index", "Usuario")" class="elements">
+                  <img src="~/Img/Usuarios.jpg" height="160" width="300">
+             </a>
+                <br />
+             <b>Productos</b>
+                <b>Usuarios</b>
+         </div>-->
+    </div>
+
+</section>

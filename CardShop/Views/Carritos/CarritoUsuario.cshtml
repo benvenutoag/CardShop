@@ -1,0 +1,55 @@
+﻿@model CardShop.Models.Carrito 
+
+@{
+    ViewData["Title"] = "Carrito";
+}
+
+<h1>Mi Carrito</h1>
+<p>
+        <a asp-action="Index" asp-controller="Productoes">Agregar Productos</a>
+    </p>
+<p>
+    @if (Model != null && Model.CarritosItems != null) { 
+        <a asp-action="Vaciar" asp-controller="Carritos" asp-route-id="@Model.CarritoId">Vaciar Carrito</a>
+    }
+</p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Producto
+                </th>
+
+                <th>
+                    Precio
+                </th>
+
+                <th>
+                    Cantidad
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.CarritosItems != null)
+            {
+                foreach (var item in Model.CarritosItems)
+                {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Producto.Nombre)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Producto.PrecioVigente)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cantidad)
+                </td>
+            </tr>
+                }
+            }
+
+        </tbody>
+    </table>
