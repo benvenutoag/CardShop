@@ -118,6 +118,7 @@ namespace CardShop.Controllers
                 _context.CarritoItem.Add(carritoItem);
 
                 carrito.CarritosItems.Add(carritoItem);
+                carrito.Subtotal += (producto.PrecioVigente * Cantidad);
 
                 await _context.SaveChangesAsync();
 
