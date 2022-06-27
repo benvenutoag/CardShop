@@ -215,6 +215,23 @@ namespace CardShop.Controllers
             return _context.Carrito.Any(e => e.CarritoId == id);
         }
 
+
+        // POST: Carritos/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<IActionResult> BorrarItem(Guid id)
+        {
+            var carritoItem = await _context.CarritoItem
+                  .FirstOrDefaultAsync(m => m.CarritoItemId == id);
+            var carrito = await _context.Carrito
+                .FirstOrDefaultAsync(m => m.CarritoId == carritoItem.CarritoId);
+            carrito.CarritosItems.Remove(carritoItem);
+            _context.CarritoItem.Remove(carritoItem);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(CarritoUsuario), new { id = carrito.UsuarioID });
+        }
+
         // GET: VACIAR EL CARRITO
         [Authorize]
         public async Task<IActionResult> Vaciar(Guid? id)

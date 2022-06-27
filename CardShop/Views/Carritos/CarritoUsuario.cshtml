@@ -47,6 +47,9 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Cantidad)
                 </td>
+                <td>
+                    <a asp-action="BorrarItem" asp-controller="Carritos"  asp-route-id="@item.CarritoItemId">Borrar</a>
+                </td>
             </tr>
                 }
             }
