@@ -50,8 +50,8 @@
                     @if (User.IsInRole("ADMIN"))
                     {
                         <td>
-                            <a asp-action="Edit" asp-route-id="@item.ProductoId">Editar</a>
-                            <a asp-action="Details" asp-route-id="@item.ProductoId">Detalles</a>
+                            <a asp-action="Edit" asp-route-id="@item.ProductoId">Editar</a> |
+                            <a asp-action="Details" asp-route-id="@item.ProductoId">Detalles</a> |
                             <a asp-action="Delete" asp-route-id="@item.ProductoId">Borrar</a>
                         </td>
                     }
