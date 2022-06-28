@@ -26,18 +26,20 @@
                 Precio
             </th>
 
-            <th>
-                Cantidad
-            </th>
-            <th>
-                Subtotal
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model != null && Model.CarritosItems != null)
-        {
-            foreach (var item in Model.CarritosItems)
+                <th>
+                    Cantidad
+                </th>
+                <th>
+                    Total por producto
+                </th>
+                <th>
+                    Borrar
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.CarritosItems != null)
             {
                 <tr>
                     <td>
@@ -48,14 +50,24 @@
                         @Html.DisplayFor(modelItem => item.Producto.PrecioVigente)
                     </td>
 
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Cantidad)
-                    </td>
-                    <td>
-                        @{var x = item.Cantidad * item.Producto.PrecioVigente; }
-                        @x.ToString()
-                    </td>
-                </tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cantidad)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cantidad)
+                </td>
+                <td>
+                    @{var subt = (item.Cantidad * item.Producto.PrecioVigente);}
+                    @subt.ToString()
+                    
+                </td>
+
+                <td>
+                    <a asp-action="BorrarItem" asp-route-id="@item.CarritoItemId">Borrar</a>
+                    @*<a asp-action="BorrarItem1" asp-controller="Carritos" asp-route-id=@item.CarritoItemId >Borrar</a>*@
+                </td>
+            </tr>
+                }
             }
         }
         @if (Model != null && Model.CarritosItems != null)
@@ -63,8 +75,7 @@
             <a asp-action="Cerrar" asp-controller="Carritos" asp-route-id="@Model.CarritoId">Comprar</a>
         }
 
+        </tbody>
+    </table>
 
-
-
-    </tbody>
-</table>
+                       
