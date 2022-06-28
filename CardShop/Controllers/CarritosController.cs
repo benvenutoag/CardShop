@@ -118,7 +118,7 @@ namespace CardShop.Controllers
                 _context.CarritoItem.Add(carritoItem);
 
                 carrito.CarritosItems.Add(carritoItem);
-                carrito.Subtotal = carrito.Subtotal + (producto.PrecioVigente * Cantidad);
+
 
                 await _context.SaveChangesAsync();
 
@@ -215,12 +215,32 @@ namespace CardShop.Controllers
             return _context.Carrito.Any(e => e.CarritoId == id);
         }
 
+        // GET: Carritos/Delete/5
+        [Authorize]
+        public async Task<IActionResult> BorrarItem(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var carritoItem = await _context.CarritoItem
+                .Include(c => c.Producto)
+                .Include(c => c.Carrito)
+                .FirstOrDefaultAsync(m => m.CarritoItemId == id);
+            if (carritoItem == null)
+            {
+                return NotFound();
+            }
+
+            return View(carritoItem);
+        }
 
         // POST: Carritos/Delete/5
-        [HttpPost]
+        [HttpPost, ActionName("BorrarItem")]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> BorrarItem(Guid id)
+        public async Task<IActionResult> BorrarItem1(Guid id)
         {
             var carritoItem = await _context.CarritoItem
                   .FirstOrDefaultAsync(m => m.CarritoItemId == id);
@@ -229,8 +249,11 @@ namespace CardShop.Controllers
             carrito.CarritosItems.Remove(carritoItem);
             _context.CarritoItem.Remove(carritoItem);
             await _context.SaveChangesAsync();
+            //return RedirectToAction(nameof(CarritoUsuario), new { id = carrito.UsuarioID });
             return RedirectToAction(nameof(CarritoUsuario), new { id = carrito.UsuarioID });
         }
+
+
 
         // GET: VACIAR EL CARRITO
         [Authorize]

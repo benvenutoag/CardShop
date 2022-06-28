@@ -27,6 +27,12 @@
                 <th>
                     Cantidad
                 </th>
+                <th>
+                    Total por producto
+                </th>
+                <th>
+                    Borrar
+                </th>
 
             </tr>
         </thead>
@@ -48,7 +54,17 @@
                     @Html.DisplayFor(modelItem => item.Cantidad)
                 </td>
                 <td>
-                    <a asp-action="BorrarItem" asp-controller="Carritos"  asp-route-id="@item.CarritoItemId">Borrar</a>
+                    @Html.DisplayFor(modelItem => item.Cantidad)
+                </td>
+                <td>
+                    @{var subt = (item.Cantidad * item.Producto.PrecioVigente);}
+                    @subt.ToString()
+                    
+                </td>
+
+                <td>
+
+                    <a asp-action="BorrarItem1" asp-controller="Carritos" asp-route-id=@item.CarritoItemId >Borrar</a>
                 </td>
             </tr>
                 }
