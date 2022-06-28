@@ -1,0 +1,70 @@
+﻿@model CardShop.Models.Carrito
+
+@{
+    ViewData["Title"] = "Compras";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<h1>Compras</h1>
+
+
+<div>
+    <h4>Carrito</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Usuario)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Usuario.UserName)
+        </dd>
+        @*<div>
+            <thead>
+                <tr>
+                    <th>
+                        Producto
+                    </th>
+
+                    <th>
+                        Precio
+                    </th>
+
+                    <th>
+                        Cantidad
+                    </th>
+
+                </tr>
+            </thead>
+            @foreach (var item in Model.CarritosItems)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Producto.Nombre)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Producto.PrecioVigente)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Cantidad)
+                    </td>
+                </tr>
+            }
+        </div>*@
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Subtotal)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Subtotal)
+        </dd>
+    </dl>
+</div>
+<div>
+    @*<a asp-action="Edit" asp-route-id="@Model.CarritoId">Editar</a> |*@
+    <a asp-action="CarritoUsuario" asp-route-id="@Model.UsuarioID">Volve al Carrito</a>
+    <br />
+    <a asp-action="Cerrar" asp-route-id="@Model.UsuarioID">Hacer compra</a>
+</div>
+

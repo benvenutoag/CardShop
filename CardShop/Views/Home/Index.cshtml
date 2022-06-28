@@ -31,7 +31,7 @@
                     <img src="~/Img/Menu-Foto2.jpg" width="300">
                     Productos
                 </a>
-                <a align="rigth" href="@Url.Action("CarritoUsuario", "Carritos")" class="elements">
+                <a align="rigth" href="@Url.Action("CarritoUsuario", "Carritos",@User.FindFirst("IdUsuario").Value)"  class="elements">
                     <img src="~/Img/Carrito.png" width="300" />
                     Ver Carrito
                 </a>

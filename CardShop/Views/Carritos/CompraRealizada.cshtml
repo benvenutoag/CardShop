@@ -1,0 +1,17 @@
+﻿@*@model CardShop.Models.Carrito*@
+@{
+    ViewData["Title"] = "CompraRealizada";
+}
+
+<h1>Compra exitosa!</h1>
+
+<p>Fecha de compra: <b>@DateTime.Now</b></p>
+
+<p class="lead mb-4">Gracias por comprar <b>@User.FindFirst("NombreUsuario").Value</b>!</p>
+
+<br />
+<div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+        <a class="btn btn btn-outline-primary btn-lg px-4 gap-3" asp-area="" asp-controller="Productoes" asp-action="Index">Volver a Comprar</a>
+    </div>
+
+
