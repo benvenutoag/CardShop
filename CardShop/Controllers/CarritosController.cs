@@ -105,7 +105,7 @@ namespace CardShop.Controllers
             {
                 var usuarioId = Guid.Parse(User.FindFirst("IdUsuario").Value);
                 var usuario = await _context.Usuario.SingleOrDefaultAsync(u => u.Id == usuarioId);
-                
+
                 var carrito = await _context.Carrito.FirstOrDefaultAsync(p => p.UsuarioID == usuarioId);
 
                 if (carrito == null)
@@ -233,7 +233,12 @@ namespace CardShop.Controllers
             return _context.Carrito.Any(e => e.CarritoId == id);
         }
 
+        // GET: Carritos/Delete/5
+        [Authorize]
+        public async Task<IActionResult> BorrarItem(Guid? id)
+        {
             if (id == null)
+            {
                 return NotFound();
             }
 
@@ -268,13 +273,16 @@ namespace CardShop.Controllers
 
 
 
-        // GET: VACIAR EL CARRITO
+        // GET: Vaciar
         [Authorize]
         public async Task<IActionResult> Vaciar(Guid? id)
+        {
             if (id == null)
             {
+                return NotFound();
             }
 
+            var carrito = await _context.Carrito.Include(c => c.CarritosItems)
                 .FirstOrDefaultAsync(m => m.CarritoId == id);
             if (carrito == null)
             {
@@ -314,9 +322,29 @@ namespace CardShop.Controllers
 
             await _context.SaveChangesAsync();
 
-            
+
+
+            return RedirectToAction("CompraRealizada", "Home", new { id = carrito.UsuarioID });
+        }
+
+        public async Task<IActionResult> PrepararCompra(Guid id)
+        {
+            var carrito = await _context.Carrito.Include(c => c.CarritosItems)
+                .FirstOrDefaultAsync(m => m.CarritoId == id);
+            if (carrito == null)
+            {
+                return NotFound();
+            }
+
+
+            if (carrito.Subtotal <= 0)
+            {
+                return NotFound();
+            }
 
             return RedirectToAction(nameof(Compras), new { id = carrito.UsuarioID });
+
         }
+
     }
 }
