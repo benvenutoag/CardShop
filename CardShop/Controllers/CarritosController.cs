@@ -233,48 +233,16 @@ namespace CardShop.Controllers
             return _context.Carrito.Any(e => e.CarritoId == id);
         }
 
-            if (id == null)
-                return NotFound();
-            }
-
-            var carritoItem = await _context.CarritoItem
-                .Include(c => c.Producto)
-                .Include(c => c.Carrito)
-                .FirstOrDefaultAsync(m => m.CarritoItemId == id);
-            if (carritoItem == null)
-            {
-                return NotFound();
-            }
-
-            return View(carritoItem);
-        }
-
-        // POST: Carritos/Delete/5
-        [HttpPost, ActionName("BorrarItem")]
-        [ValidateAntiForgeryToken]
-        [Authorize]
-        public async Task<IActionResult> BorrarItem1(Guid id)
-        {
-            var carritoItem = await _context.CarritoItem
-                  .FirstOrDefaultAsync(m => m.CarritoItemId == id);
-            var carrito = await _context.Carrito
-                .FirstOrDefaultAsync(m => m.CarritoId == carritoItem.CarritoId);
-            carrito.CarritosItems.Remove(carritoItem);
-            _context.CarritoItem.Remove(carritoItem);
-            await _context.SaveChangesAsync();
-            //return RedirectToAction(nameof(CarritoUsuario), new { id = carrito.UsuarioID });
-            return RedirectToAction(nameof(CarritoUsuario), new { id = carrito.UsuarioID });
-        }
-
-
-
-        // GET: VACIAR EL CARRITO
+        // GET: Vaciar
         [Authorize]
         public async Task<IActionResult> Vaciar(Guid? id)
+        {
             if (id == null)
             {
+                return NotFound();
             }
 
+            var carrito = await _context.Carrito.Include(c => c.CarritosItems)
                 .FirstOrDefaultAsync(m => m.CarritoId == id);
             if (carrito == null)
             {
