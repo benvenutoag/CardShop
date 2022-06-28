@@ -1,0 +1,13 @@
+﻿
+@{
+    ViewData["Title"] = "CompraRealizada";
+}
+
+<h1>Compra exitosa!</h1>
+
+<p>Fecha de compra: <b>@DateTime.Now</b></p>
+
+<p class="lead mb-4">Gracias por comprar <b>@User.FindFirst("NombreUsuario").Value</b>!</p>
+
+
+

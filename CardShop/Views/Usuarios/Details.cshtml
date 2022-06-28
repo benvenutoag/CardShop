@@ -32,12 +32,22 @@
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Password)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Password)
+        <dd class="col-sm-10">
+            @Html.Raw("\u2022\u2022\u2022\u2022\u2022")
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Editar</a> |
-    <a asp-action="Index">Back to List</a>
+    @if (User.IsInRole("ADMIN"))
+    {
+        <a asp-action="Edit" asp-route-id="@Model.Id">Editar</a>
+        <a></a>
+        <a asp-action="Index">Back to List</a>
+    }
+    else
+    {
+        <a asp-action="Edit" asp-route-id="@Model.Id">Editar</a>
+        <a></a>
+        <a asp-controller="Home" asp-action="IndexIngreso">Back to Home</a>
+    }
 </div>

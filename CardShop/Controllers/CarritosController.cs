@@ -38,6 +38,18 @@ namespace CardShop.Controllers
             return View(await carrito);
         }
 
+        //GET: Carritos/Compras/5
+        [Authorize(Roles = "USUARIO")]
+        public async Task<IActionResult> Compras(Guid Id)
+        {
+            var carrito = _context.Carrito.Include(n => n.CarritosItems)
+                                .ThenInclude(ci => ci.Producto)
+                              .Include(c => c.Usuario)
+                              .FirstOrDefaultAsync(n => n.UsuarioID == Id);
+
+            return View(await carrito);
+        }
+
         // GET: Carritos/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
@@ -93,10 +105,12 @@ namespace CardShop.Controllers
             {
                 var usuarioId = Guid.Parse(User.FindFirst("IdUsuario").Value);
                 var usuario = await _context.Usuario.SingleOrDefaultAsync(u => u.Id == usuarioId);
+                
+                var carrito = await _context.Carrito.FirstOrDefaultAsync(p => p.UsuarioID == usuarioId);
 
-                var carrito = await _context.Carrito.FirstOrDefaultAsync(p => p.UsuarioID == usuarioId );
-                if(carrito==null){
-                    
+                if (carrito == null)
+                {
+
                     var CardShop = new Carrito();
                     CardShop.CarritoId = Guid.NewGuid();
                     CardShop.UsuarioID = usuarioId;
@@ -117,7 +131,12 @@ namespace CardShop.Controllers
 
                 _context.CarritoItem.Add(carritoItem);
 
+                var precioProducto = await _context.Producto.SingleOrDefaultAsync(p => p.ProductoId == carritoItem.ProductoId);
+
+
                 carrito.CarritosItems.Add(carritoItem);
+
+                carrito.Subtotal += carritoItem.Cantidad * precioProducto.PrecioVigente;
 
                 await _context.SaveChangesAsync();
 
@@ -214,7 +233,7 @@ namespace CardShop.Controllers
             return _context.Carrito.Any(e => e.CarritoId == id);
         }
 
-        // GET: VACIAR EL CARRITO
+        // GET: Vaciar
         [Authorize]
         public async Task<IActionResult> Vaciar(Guid? id)
         {
@@ -230,9 +249,42 @@ namespace CardShop.Controllers
                 return NotFound();
             }
             carrito.CarritosItems.Clear();
+            carrito.Subtotal = 0;
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(CarritoUsuario), new { id = carrito.UsuarioID });
+        }
+
+        public async Task<IActionResult> Cerrar(Guid id)
+        {
+            var carrito = await _context.Carrito.Include(c => c.CarritosItems)
+                .FirstOrDefaultAsync(m => m.CarritoId == id);
+            if (carrito == null)
+            {
+                return NotFound();
+            }
+
+
+            if (carrito.Subtotal <= 0)
+            {
+                return NotFound();
+            }
+            // se borra la lista de carritos y se crea uno nuevo despues de hacer la compra (esta mal porque si volves para atras lo borra pero mantiene el subtotal)
+
+            var carritoNuevo = new Carrito();
+            carritoNuevo.CarritoId = Guid.NewGuid();
+            carritoNuevo.UsuarioID = carrito.UsuarioID;
+            carritoNuevo.Subtotal = 0;
+            carrito.CarritosItems.Clear();
+
+            _context.Carrito.Add(carritoNuevo);
+
+
+            await _context.SaveChangesAsync();
+
+            
+
+            return RedirectToAction(nameof(Compras), new { id = carrito.UsuarioID });
         }
     }
 }
