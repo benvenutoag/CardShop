@@ -37,6 +37,7 @@ namespace CardShop.Controllers
                                           .FirstOrDefaultAsync(n => n.UsuarioID == Id);
             return View(await carrito);
         }
+        
 
         //GET: Carritos/Compras/5
         [Authorize(Roles = "USUARIO")]
@@ -49,6 +50,20 @@ namespace CardShop.Controllers
 
             return View(await carrito);
         }
+
+        //GET: Carritos/Compras/5
+        [Authorize(Roles = "USUARIO")]
+        public async Task<IActionResult> CompraRealizada(Guid Id)
+        {
+            var carrito = _context.Carrito.Include(n => n.CarritosItems)
+                                .ThenInclude(ci => ci.Producto)
+                              .Include(c => c.Usuario)
+                              .FirstOrDefaultAsync(n => n.UsuarioID == Id);
+
+            return View(await carrito);
+        }
+
+
 
         // GET: Carritos/Details/5
         public async Task<IActionResult> Details(Guid? id)
@@ -324,7 +339,7 @@ namespace CardShop.Controllers
 
 
 
-            return RedirectToAction("CompraRealizada", "Home", new { id = carrito.UsuarioID });
+            return RedirectToAction(nameof(CompraRealizada), new { id = carrito.UsuarioID });
         }
 
         public async Task<IActionResult> PrepararCompra(Guid id)
