@@ -248,46 +248,6 @@ namespace CardShop.Controllers
             return _context.Carrito.Any(e => e.CarritoId == id);
         }
 
-        // // GET: Carritos/Delete/5
-        // [Authorize]
-        // public async Task<IActionResult> BorrarItem(Guid? id)
-        // {
-        //     if (id == null)
-        //     {
-        //         return NotFound();
-        //     }
-
-        //     var carritoItem = await _context.CarritoItem
-        //         .Include(c => c.Producto)
-        //         .Include(c => c.Carrito)
-        //         .FirstOrDefaultAsync(m => m.CarritoItemId == id);
-        //     if (carritoItem == null)
-        //     {
-        //         return NotFound();
-        //     }
-
-        //     return View(carritoItem);
-        // }
-
-        // // POST: Carritos/Delete/5
-        // [HttpPost, ActionName("BorrarItem")]
-        // [ValidateAntiForgeryToken]
-        // [Authorize]
-        // public async Task<IActionResult> BorrarItem1(Guid id)
-        // {
-        //     var carritoItem = await _context.CarritoItem
-        //           .FirstOrDefaultAsync(m => m.CarritoItemId == id);
-        //     var carrito = await _context.Carrito
-        //         .FirstOrDefaultAsync(m => m.CarritoId == carritoItem.CarritoId);
-        //     carrito.CarritosItems.Remove(carritoItem);
-        //     //carrito.Subtotal -= (carritoItem.Cantidad * carritoItem.Producto.PrecioVigente);
-        //     _context.CarritoItem.Remove(carritoItem);
-        //     await _context.SaveChangesAsync();
-        //     return RedirectToAction(nameof(CarritoUsuario), new { id = carrito.UsuarioID });
-        // }
-
-
-
         // GET: Vaciar
         [Authorize]
         public async Task<IActionResult> Vaciar(Guid? id)
@@ -365,14 +325,14 @@ namespace CardShop.Controllers
 
         }
 
-=        // GET: Carritos/Edit/5
+       // GET: Carritos/Edit/5
         [Authorize]
         public async Task<IActionResult> EditarCantidad(Guid? id, int Cantidad)
         {
             if (id == null)
             {
                 return NotFound();
-            }======
+            }
 
             var carritoItem = await _context.CarritoItem.FirstOrDefaultAsync(n => n.CarritoItemId == id);
             if (carritoItem == null)
