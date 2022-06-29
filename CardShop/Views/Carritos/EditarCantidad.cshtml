@@ -2,7 +2,7 @@
 
 
 
-<h4>CarritoItem</h4>
+<h4>Editar</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -11,9 +11,9 @@
             <input type="hidden" asp-for="CarritoItemId" />
             <input type="hidden" asp-for="CarritoId" />
             <input type="hidden" asp-for="ProductoId" />
-            @Model.Producto.Nombre
+            <b>@Model.Producto.Nombre</b>
             <br />
-            @Model.Producto.Descripcion
+            @*@Model.Producto.Descripcion*@
             <div class="form-group">
                 <label asp-for="Cantidad" class="control-label"></label>
                 <input asp-for="Cantidad" class="form-control" />
@@ -27,5 +27,5 @@
 </div>
 
 <div>
-    <a asp-action="Index">Volver</a>
+    <a asp-action="CarritoUsuario" asp-route-id="@Model.Carrito.UsuarioID">Volver</a>
 </div>

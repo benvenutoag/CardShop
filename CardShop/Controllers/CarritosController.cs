@@ -151,7 +151,7 @@ namespace CardShop.Controllers
 
                 carrito.CarritosItems.Add(carritoItem);
 
-                carrito.Subtotal += carritoItem.Cantidad * precioProducto.PrecioVigente;
+                //carrito.Subtotal += carritoItem.Cantidad * precioProducto.PrecioVigente;
 
                 await _context.SaveChangesAsync();
 
@@ -310,9 +310,16 @@ namespace CardShop.Controllers
         {
             var carrito = await _context.Carrito.Include(c => c.CarritosItems)
                 .FirstOrDefaultAsync(m => m.CarritoId == id);
-            if (carrito == null)
+            if (carrito == null || carrito.CarritosItems.Count() == 0)
             {
                 return NotFound();
+            }
+            carrito.Subtotal = 0;
+
+            foreach (CarritoItem carritoItem in carrito.CarritosItems)
+            {
+                var producto = await _context.Producto.SingleOrDefaultAsync(p => p.ProductoId == carritoItem.ProductoId);
+                carrito.Subtotal += carritoItem.Cantidad * producto.PrecioVigente;
             }
 
 
@@ -320,6 +327,8 @@ namespace CardShop.Controllers
             {
                 return NotFound();
             }
+
+            await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Compras), new { id = carrito.UsuarioID });
 
@@ -380,6 +389,7 @@ namespace CardShop.Controllers
                 var carrito = await _context.Carrito
                     .FirstOrDefaultAsync(m => m.CarritoId == carritoItem.CarritoId);
                 return RedirectToAction(nameof(CarritoUsuario), new { id = carrito.UsuarioID });
+               
             }
             return View(id);
         }

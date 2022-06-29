@@ -13,15 +13,13 @@
         </dd>
     </dl>
 
-        <form asp-action="BorrarItem">
-            <input type="hidden" asp-for="CarritoItemId" />
-            <input type="submit" value="Borrar" class="btn btn-danger" />
-        </form>
-
-    <form asp-action="CarritoUsuario">
-        <input type="hidden" asp-for="@Model.Carrito.UsuarioID" />
-        <input type="submit" value="Volver atrás" class="card-columns" />
-
+    <form asp-action="BorrarItem">
+        <input type="hidden" asp-for="CarritoItemId" />
+        <input type="submit" value="Borrar" class="btn btn-danger" />
     </form>
 
+
+</div>
+<div>
+    <a asp-action="CarritoUsuario" asp-route-id="@Model.Carrito.UsuarioID">Volver</a>
 </div>
