@@ -280,9 +280,9 @@ namespace CardShop.Controllers
             var carrito = await _context.Carrito
                 .FirstOrDefaultAsync(m => m.CarritoId == carritoItem.CarritoId);
             carrito.CarritosItems.Remove(carritoItem);
+            //carrito.Subtotal -= (carritoItem.Cantidad * carritoItem.Producto.PrecioVigente);
             _context.CarritoItem.Remove(carritoItem);
             await _context.SaveChangesAsync();
-            //return RedirectToAction(nameof(CarritoUsuario), new { id = carrito.UsuarioID });
             return RedirectToAction(nameof(CarritoUsuario), new { id = carrito.UsuarioID });
         }
 
@@ -326,13 +326,14 @@ namespace CardShop.Controllers
             }
             // se borra la lista de carritos y se crea uno nuevo despues de hacer la compra (esta mal porque si volves para atras lo borra pero mantiene el subtotal)
 
-            var carritoNuevo = new Carrito();
-            carritoNuevo.CarritoId = Guid.NewGuid();
-            carritoNuevo.UsuarioID = carrito.UsuarioID;
-            carritoNuevo.Subtotal = 0;
+            //var carritoNuevo = new Carrito();
+            //carritoNuevo.CarritoId = Guid.NewGuid();
+            //carritoNuevo.UsuarioID = carrito.UsuarioID;
+            //carritoNuevo.Subtotal = 0;
             carrito.CarritosItems.Clear();
+            carrito.Subtotal = 0;
 
-            _context.Carrito.Add(carritoNuevo);
+            //_context.Carrito.Add(carritoNuevo);
 
 
             await _context.SaveChangesAsync();
@@ -342,6 +343,7 @@ namespace CardShop.Controllers
             return RedirectToAction(nameof(CompraRealizada), new { id = carrito.UsuarioID });
         }
 
+        [HttpGet]
         public async Task<IActionResult> PrepararCompra(Guid id)
         {
             var carrito = await _context.Carrito.Include(c => c.CarritosItems)
