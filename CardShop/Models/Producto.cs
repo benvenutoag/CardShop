@@ -18,7 +18,8 @@ namespace CardShop.Models
 
         public float PrecioVigente { get; set; }
 
+        public string Categoria { get; set; }
 
-        public string Foto { get; set; } = "default.png";
+        
     }
 }

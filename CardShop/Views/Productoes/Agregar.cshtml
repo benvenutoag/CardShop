@@ -29,6 +29,11 @@
                 <span asp-validation-for="PrecioVigente" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Categoria" class="control-label"></label>
+                <input disabled asp-for="Categoria" class="form-control" />
+                <span asp-validation-for="Categoria" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <div class="text-danger">@ViewBag.ErrorEnLogin</div>
                 <label name="Cantidad" class="control-label"></label>
                 <input type="number" name="Cantidad" class="form-control" />
