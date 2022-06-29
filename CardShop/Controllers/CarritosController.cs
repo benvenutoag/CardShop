@@ -215,6 +215,88 @@ namespace CardShop.Controllers
             return _context.Carrito.Any(e => e.CarritoId == id);
         }
 
+
+
+        // GET: VACIAR EL CARRITO
+        [Authorize]
+        public async Task<IActionResult> Vaciar(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var carrito = await _context.Carrito.Include(c => c.CarritosItems)
+                .FirstOrDefaultAsync(m => m.CarritoId == id);
+            if (carrito == null)
+            {
+                return NotFound();
+            }
+            carrito.CarritosItems.Clear();
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(CarritoUsuario), new { id = carrito.UsuarioID });
+        }
+
+        // GET: Carritos/Edit/5
+        [Authorize]
+        public async Task<IActionResult> EditarCantidad(Guid? id, int Cantidad)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var carritoItem = await _context.CarritoItem
+
+                .FirstOrDefaultAsync(n => n.CarritoItemId == id);
+            if (carritoItem == null)
+            {
+                return NotFound();
+            }
+            ViewData["Cantidad"] = Cantidad;
+
+            return View(carritoItem);
+        }
+        // POST: Carritos/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<IActionResult> EditarCantidad (Guid id, CarritoItem carritoItem)
+        {
+            if (id != carritoItem.CarritoItemId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(carritoItem);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!CarritoExists(carritoItem.CarritoId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                var carrito = await _context.Carrito
+                    .FirstOrDefaultAsync(m => m.CarritoId == carritoItem.CarritoId);
+                return RedirectToAction(nameof(CarritoUsuario), new { id = carrito.UsuarioID });
+            }
+
+            return View(id);
+        }
+
         // GET: Carritos/Delete/5
         [Authorize]
         public async Task<IActionResult> BorrarItem(Guid? id)
@@ -237,10 +319,10 @@ namespace CardShop.Controllers
         }
 
         // POST: Carritos/Delete/5
-        [HttpPost, ActionName("BorrarItem")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> BorrarItem1(Guid id)
+        public async Task<IActionResult> BorrarItem(Guid id)
         {
             var carritoItem = await _context.CarritoItem
                   .FirstOrDefaultAsync(m => m.CarritoItemId == id);
@@ -249,30 +331,6 @@ namespace CardShop.Controllers
             carrito.CarritosItems.Remove(carritoItem);
             _context.CarritoItem.Remove(carritoItem);
             await _context.SaveChangesAsync();
-            //return RedirectToAction(nameof(CarritoUsuario), new { id = carrito.UsuarioID });
-            return RedirectToAction(nameof(CarritoUsuario), new { id = carrito.UsuarioID });
-        }
-
-
-
-        // GET: VACIAR EL CARRITO
-        [Authorize]
-        public async Task<IActionResult> Vaciar(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var carrito = await _context.Carrito.Include(c => c.CarritosItems)
-                .FirstOrDefaultAsync(m => m.CarritoId == id);
-            if (carrito == null)
-            {
-                return NotFound();
-            }
-            carrito.CarritosItems.Clear();
-            await _context.SaveChangesAsync();
-
             return RedirectToAction(nameof(CarritoUsuario), new { id = carrito.UsuarioID });
         }
     }

@@ -134,6 +134,8 @@ namespace CardShop.Controllers
             return View(carritoItem);
         }
 
+
+
         // GET: CarritoItems/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
@@ -153,6 +155,10 @@ namespace CardShop.Controllers
 
             return View(carritoItem);
         }
+
+
+
+
 
         // POST: CarritoItems/Delete/5
         [HttpPost, ActionName("Delete")]
