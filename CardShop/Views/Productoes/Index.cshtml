@@ -12,66 +12,82 @@
         <a asp-action="Create">Crear Nuevo Producto</a>
     </p>
 }
-    <table class="table">
-        <thead>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descripcion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PrecioVigente)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Categoria)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
             <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Nombre)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Descripcion)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.PrecioVigente)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Categoria)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Nombre)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Descripcion)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PrecioVigente)
-                    </td>
-                    <td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descripcion)
+                </td>
+                <td>
+                    $
+                    @Html.DisplayFor(modelItem => item.PrecioVigente)
+                </td>
+                @if (item.Categoria.Equals("Bebida"))
+                {
+                    <td style="background-color:lightsalmon">
                         @Html.DisplayFor(modelItem => item.Categoria)
                     </td>
+                }
+                else if (item.Categoria.Equals("Comida"))
+                {
+                    <td style="background-color:deepskyblue">
+                        @Html.DisplayFor(modelItem => item.Categoria)
+                    </td>
+                }
+                else
+                {
+                    <td style="background-color:greenyellow">
+                        @Html.DisplayFor(modelItem => item.Categoria)
+                    </td>
+                }
 
-                    @if (User.IsInRole("ADMIN"))
+                @if (User.IsInRole("ADMIN"))
+                {
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.ProductoId">Editar</a> |
+                        <a asp-action="Details" asp-route-id="@item.ProductoId">Detalles</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ProductoId">Borrar</a>
+                    </td>
+                }
+
+                else
+                {
+                    if (User.Identity.IsAuthenticated)
                     {
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@item.ProductoId">Editar</a> |
-                            <a asp-action="Details" asp-route-id="@item.ProductoId">Detalles</a> |
-                            <a asp-action="Delete" asp-route-id="@item.ProductoId">Borrar</a>
-                        </td>
-                    }
+                        <td><a asp-action="Agregar" asp-route-id="@item.ProductoId">Agregar</a></td>
 
-                    else
-                    {
-                        if (User.Identity.IsAuthenticated)
-                        {
-                            <td><a asp-action="Agregar" asp-route-id="@item.ProductoId">Agregar</a></td>
-                            
 
-                        }
                     }
-                    @*<td>
-                            <a asp-action="Edit" asp-route-id="@item.ProductoId">Editar</a> |
-                            <a asp-action="Details" asp-route-id="@item.ProductoId">Detalles</a> |
-                            <a asp-action="Delete" asp-route-id="@item.ProductoId">Borrar</a>
-                            <a asp-action="Agregar" asp-route-id="@item.ProductoId">Agregar</a>
-                        </td>*@
-                </tr>
-            }
-        </tbody>
-    </table>
+                }
+                @*<td>
+                        <a asp-action="Edit" asp-route-id="@item.ProductoId">Editar</a> |
+                        <a asp-action="Details" asp-route-id="@item.ProductoId">Detalles</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ProductoId">Borrar</a>
+                        <a asp-action="Agregar" asp-route-id="@item.ProductoId">Agregar</a>
+                    </td>*@
+            </tr>
+        }
+    </tbody>
+</table>

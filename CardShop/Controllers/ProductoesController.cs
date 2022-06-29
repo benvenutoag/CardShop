@@ -24,7 +24,8 @@ namespace CardShop.Controllers
       
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Producto.ToListAsync());
+            var productosXCategoria = _context.Producto.OrderBy(p => p.Categoria).ThenBy(r => r.Nombre).ToListAsync();
+            return View(await productosXCategoria);
         }
 
 
