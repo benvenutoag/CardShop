@@ -146,7 +146,7 @@ namespace CardShop.Controllers
 
                 _context.CarritoItem.Add(carritoItem);
 
-                var precioProducto = await _context.Producto.SingleOrDefaultAsync(p => p.ProductoId == carritoItem.ProductoId);
+                //var precioProducto = await _context.Producto.SingleOrDefaultAsync(p => p.ProductoId == carritoItem.ProductoId);
 
 
                 carrito.CarritosItems.Add(carritoItem);
