@@ -12,6 +12,13 @@
         <div class="text-center">
             <a align="left" href="@Url.Action("Index", "Productoes")" class="elements">
                 <img src="~/Img/Menu-Foto2.jpg" width="300">
+                Productos
+            </a>
+            <br>
+
+            <a align="rigth" href="@Url.Action("CarritoUsuario", "Carritos", @User.FindFirst("IdUsuario").Value)" class="elements">
+                <img src="~/Img/Carrito.png" width="300" />
+                Ver Carrito
             </a>
 
 
