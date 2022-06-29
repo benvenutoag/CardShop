@@ -334,7 +334,10 @@ namespace CardShop.Controllers
                 return NotFound();
             }
 
-            var carritoItem = await _context.CarritoItem.FirstOrDefaultAsync(n => n.CarritoItemId == id);
+            var carritoItem = await _context.CarritoItem
+                .Include(n => n.Producto)               
+                .Include(n => n.Carrito)
+                .FirstOrDefaultAsync(n => n.CarritoItemId == id);
             if (carritoItem == null)
             {
                 return NotFound();
@@ -378,7 +381,6 @@ namespace CardShop.Controllers
                     .FirstOrDefaultAsync(m => m.CarritoId == carritoItem.CarritoId);
                 return RedirectToAction(nameof(CarritoUsuario), new { id = carrito.UsuarioID });
             }
-
             return View(id);
         }
 
