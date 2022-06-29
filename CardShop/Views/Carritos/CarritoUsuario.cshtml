@@ -45,6 +45,7 @@
                     </td>
 
                     <td>
+                        $
                         @Html.DisplayFor(modelItem => item.Producto.PrecioVigente)
                     </td>
 
@@ -52,6 +53,7 @@
                         @Html.DisplayFor(modelItem => item.Cantidad)
                     </td>
                     <td>
+                        $
                         @{var subt = (item.Cantidad * item.Producto.PrecioVigente);}
                         @subt.ToString()
 
