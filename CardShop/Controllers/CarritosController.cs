@@ -248,43 +248,43 @@ namespace CardShop.Controllers
             return _context.Carrito.Any(e => e.CarritoId == id);
         }
 
-        // GET: Carritos/Delete/5
-        [Authorize]
-        public async Task<IActionResult> BorrarItem(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        // // GET: Carritos/Delete/5
+        // [Authorize]
+        // public async Task<IActionResult> BorrarItem(Guid? id)
+        // {
+        //     if (id == null)
+        //     {
+        //         return NotFound();
+        //     }
 
-            var carritoItem = await _context.CarritoItem
-                .Include(c => c.Producto)
-                .Include(c => c.Carrito)
-                .FirstOrDefaultAsync(m => m.CarritoItemId == id);
-            if (carritoItem == null)
-            {
-                return NotFound();
-            }
+        //     var carritoItem = await _context.CarritoItem
+        //         .Include(c => c.Producto)
+        //         .Include(c => c.Carrito)
+        //         .FirstOrDefaultAsync(m => m.CarritoItemId == id);
+        //     if (carritoItem == null)
+        //     {
+        //         return NotFound();
+        //     }
 
-            return View(carritoItem);
-        }
+        //     return View(carritoItem);
+        // }
 
-        // POST: Carritos/Delete/5
-        [HttpPost, ActionName("BorrarItem")]
-        [ValidateAntiForgeryToken]
-        [Authorize]
-        public async Task<IActionResult> BorrarItem1(Guid id)
-        {
-            var carritoItem = await _context.CarritoItem
-                  .FirstOrDefaultAsync(m => m.CarritoItemId == id);
-            var carrito = await _context.Carrito
-                .FirstOrDefaultAsync(m => m.CarritoId == carritoItem.CarritoId);
-            carrito.CarritosItems.Remove(carritoItem);
-            //carrito.Subtotal -= (carritoItem.Cantidad * carritoItem.Producto.PrecioVigente);
-            _context.CarritoItem.Remove(carritoItem);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(CarritoUsuario), new { id = carrito.UsuarioID });
-        }
+        // // POST: Carritos/Delete/5
+        // [HttpPost, ActionName("BorrarItem")]
+        // [ValidateAntiForgeryToken]
+        // [Authorize]
+        // public async Task<IActionResult> BorrarItem1(Guid id)
+        // {
+        //     var carritoItem = await _context.CarritoItem
+        //           .FirstOrDefaultAsync(m => m.CarritoItemId == id);
+        //     var carrito = await _context.Carrito
+        //         .FirstOrDefaultAsync(m => m.CarritoId == carritoItem.CarritoId);
+        //     carrito.CarritosItems.Remove(carritoItem);
+        //     //carrito.Subtotal -= (carritoItem.Cantidad * carritoItem.Producto.PrecioVigente);
+        //     _context.CarritoItem.Remove(carritoItem);
+        //     await _context.SaveChangesAsync();
+        //     return RedirectToAction(nameof(CarritoUsuario), new { id = carrito.UsuarioID });
+        // }
 
 
 
@@ -310,6 +310,7 @@ namespace CardShop.Controllers
             return RedirectToAction(nameof(CarritoUsuario), new { id = carrito.UsuarioID });
         }
 
+
         public async Task<IActionResult> Cerrar(Guid id)
         {
             var carrito = await _context.Carrito.Include(c => c.CarritosItems)
@@ -318,6 +319,7 @@ namespace CardShop.Controllers
             {
                 return NotFound();
             }
+
 
 
             if (carrito.Subtotal <= 0)
@@ -363,5 +365,98 @@ namespace CardShop.Controllers
 
         }
 
+=        // GET: Carritos/Edit/5
+        [Authorize]
+        public async Task<IActionResult> EditarCantidad(Guid? id, int Cantidad)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }======
+
+            var carritoItem = await _context.CarritoItem.FirstOrDefaultAsync(n => n.CarritoItemId == id);
+            if (carritoItem == null)
+            {
+                return NotFound();
+            }
+            ViewData["Cantidad"] = Cantidad;
+
+            return View(carritoItem);
+        }
+        // POST: Carritos/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<IActionResult> EditarCantidad (Guid id, CarritoItem carritoItem)
+        {
+            if (id != carritoItem.CarritoItemId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(carritoItem);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!CarritoExists(carritoItem.CarritoId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                var carrito = await _context.Carrito
+                    .FirstOrDefaultAsync(m => m.CarritoId == carritoItem.CarritoId);
+                return RedirectToAction(nameof(CarritoUsuario), new { id = carrito.UsuarioID });
+            }
+
+            return View(id);
+        }
+
+        // GET: Carritos/Delete/5
+        [Authorize]
+        public async Task<IActionResult> BorrarItem(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var carritoItem = await _context.CarritoItem
+                .Include(c => c.Producto)
+                .Include(c => c.Carrito)
+                .FirstOrDefaultAsync(m => m.CarritoItemId == id);
+            if (carritoItem == null)
+            {
+                return NotFound();
+            }
+
+            return View(carritoItem);
+        }
+
+        // POST: Carritos/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<IActionResult> BorrarItem(Guid id)
+        {
+            var carritoItem = await _context.CarritoItem
+                  .FirstOrDefaultAsync(m => m.CarritoItemId == id);
+            var carrito = await _context.Carrito
+                .FirstOrDefaultAsync(m => m.CarritoId == carritoItem.CarritoId);
+            carrito.CarritosItems.Remove(carritoItem);
+            _context.CarritoItem.Remove(carritoItem);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(CarritoUsuario), new { id = carrito.UsuarioID });
+        }
     }
 }

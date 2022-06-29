@@ -55,13 +55,12 @@
                         @{var subt = (item.Cantidad * item.Producto.PrecioVigente);}
                         @subt.ToString()
 
-                    </td>
+                <td>
 
-                    <td>
-                        <a asp-action="BorrarItem" asp-route-id="@item.CarritoItemId">Borrar</a>
-                        @*<a asp-action="BorrarItem1" asp-controller="Carritos" asp-route-id=@item.CarritoItemId >Borrar</a>*@
-                    </td>
-                </tr>
+                    <a asp-action="BorrarItem"  asp-route-id=@item.CarritoItemId >Borrar</a>| <a asp-action="EditarCantidad" asp-route-id=@item.CarritoItemId>Editar</a>
+                </td>
+            </tr>
+                }
             }
         }
 
