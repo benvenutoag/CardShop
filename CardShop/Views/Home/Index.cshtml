@@ -26,17 +26,22 @@
                 <a class="btn btn btn-outline-primary btn-lg px-4 gap-3" asp-area="" asp-controller="Productos" asp-action="Index">Comprar</a>
             </div>*@
 
-            <div class="text-center">
-                <a align="left" href="@Url.Action("Index", "Productoes")" class="elements">
-                    <img src="~/Img/Menu-Foto2.jpg" width="300">
-                    Productos
-                </a>
-                <a align="rigth" href="@Url.Action("CarritoUsuario", "Carritos", @User.FindFirst("IdUsuario").Value)"  class="elements">
-                    <img src="~/Img/Carrito.png" width="300" />
-                    Ver Carrito
-                </a>
-        
-            </div>
+    <div class="text-center">
+        <a align="left" href="@Url.Action("Index", "Productoes")" class="elements">
+            <img src="~/Img/Menu-Foto2.jpg" width="300">
+            Productos
+        </a>
+        <a align="rigth" href="@Url.Action("CarritoUsuario", "Carritos", @User.FindFirst("IdUsuario").Value)" class="elements">
+            <img src="~/Img/Carrito.png" width="300" />
+            Ver carrito
+        </a>
+
+        @*Agregar Producto Más Pedido*@
+        @*<a align="rigth" href="@Url.Action("Agregar", "Productoes", @User.FindFirst("ProductoId").Value)" class="elements">
+            <img src="~/Img/Menu-Carrito.png" width="300" />
+            <a asp-action="MasPedido" asp-route-id="@item.ProductoId>Producto más pedido</a>
+        </a>*@
+    </div>
         }
      </div>
 
