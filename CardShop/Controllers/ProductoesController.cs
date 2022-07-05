@@ -174,26 +174,5 @@ namespace CardShop.Controllers
             }
             return View(producto);
         }
-
-        public async Task<IActionResult> MasPedido(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var producto = await _context.Producto.FindAsync(id);
-            if (producto == null)
-            {
-                return NotFound();
-            }
-
-            if (TempData["error"] != null)
-            {
-                ViewBag.ErrorEnLogin = TempData["error"];
-            }
-            return View(producto);
-        }
-
     }
 }
