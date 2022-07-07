@@ -22,7 +22,7 @@ namespace CardShop.Controllers
         // GET: Compras
         public async Task<IActionResult> Index()
         {
-            var baseDatos = _context.Compras.Include(c => c.Carrito).Include(c => c.Usuario);
+            var baseDatos = _context.Compra.Include(c => c.Carrito).Include(c => c.Usuario);
             return View(await baseDatos.ToListAsync());
         }
 
@@ -34,7 +34,7 @@ namespace CardShop.Controllers
                 return NotFound();
             }
 
-            var compra = await _context.Compras
+            var compra = await _context.Compra
                 .Include(c => c.Carrito)
                 .Include(c => c.Usuario)
                 .FirstOrDefaultAsync(m => m.CompraID == id);
@@ -81,7 +81,7 @@ namespace CardShop.Controllers
                 return NotFound();
             }
 
-            var compra = await _context.Compras.FindAsync(id);
+            var compra = await _context.Compra.FindAsync(id);
             if (compra == null)
             {
                 return NotFound();
@@ -136,7 +136,7 @@ namespace CardShop.Controllers
                 return NotFound();
             }
 
-            var compra = await _context.Compras
+            var compra = await _context.Compra
                 .Include(c => c.Carrito)
                 .Include(c => c.Usuario)
                 .FirstOrDefaultAsync(m => m.CompraID == id);
@@ -153,15 +153,15 @@ namespace CardShop.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var compra = await _context.Compras.FindAsync(id);
-            _context.Compras.Remove(compra);
+            var compra = await _context.Compra.FindAsync(id);
+            _context.Compra.Remove(compra);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool CompraExists(Guid id)
         {
-            return _context.Compras.Any(e => e.CompraID == id);
+            return _context.Compra.Any(e => e.CompraID == id);
         }
 
 
@@ -204,7 +204,7 @@ namespace CardShop.Controllers
             compra.Carrito = carritoNuevo;
             compra.CarritoId = carritoNuevo.CarritoId;
             _context.Carrito.Add(carritoNuevo);
-            _context.Compras.Add(compra);
+            _context.Compra.Add(compra);
 
             carrito.CarritosItems.Clear();
             await _context.SaveChangesAsync();

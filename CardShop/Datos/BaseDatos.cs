@@ -23,6 +23,6 @@ namespace CardShop.Datos
 
         public DbSet<CarritoItem> CarritoItem { get; set; }
 
-        public DbSet<Compra> Compras { get; set; }
+        public DbSet<Compra> Compra { get; set; }
     }
 }
