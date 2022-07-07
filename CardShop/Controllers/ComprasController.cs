@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CardShop.Datos;
 using CardShop.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CardShop.Controllers
 {
@@ -24,6 +25,16 @@ namespace CardShop.Controllers
         {
             var baseDatos = _context.Compra.Include(c => c.Carrito).Include(c => c.Usuario);
             return View(await baseDatos.ToListAsync());
+        }
+
+        // GET: Compras del Cliente
+        [Authorize(Roles = "USUARIO")]
+        public async Task<IActionResult> ComprasUsuario(Guid id)
+        {
+            var cliente = _context.Usuario.FirstOrDefault(n => n.Id == id);
+            ViewData["nombre"] = cliente.Nombre + " " + cliente.Apellido;
+            var carritoComprasContext = _context.Compra.Include(c => c.Carrito).Include(c => c.Usuario).Where(n => n.UsuarioId == id);
+            return View(await carritoComprasContext.ToListAsync());
         }
 
         // GET: Compra/Details/5
