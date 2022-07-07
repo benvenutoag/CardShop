@@ -19,14 +19,14 @@ namespace CardShop.Controllers
             _context = context;
         }
 
-        // GET: Compras
+        // GET: Compra
         public async Task<IActionResult> Index()
         {
             var baseDatos = _context.Compra.Include(c => c.Carrito).Include(c => c.Usuario);
             return View(await baseDatos.ToListAsync());
         }
 
-        // GET: Compras/Details/5
+        // GET: Compra/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -46,7 +46,7 @@ namespace CardShop.Controllers
             return View(compra);
         }
 
-        // GET: Compras/Create
+        // GET: Compra/Create
         public IActionResult Create()
         {
             ViewData["CarritoId"] = new SelectList(_context.Carrito, "CarritoId", "CarritoId");
@@ -54,7 +54,7 @@ namespace CardShop.Controllers
             return View();
         }
 
-        // POST: Compras/Create
+        // POST: Compra/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -73,7 +73,7 @@ namespace CardShop.Controllers
             return View(compra);
         }
 
-        // GET: Compras/Edit/5
+        // GET: Compra/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -91,7 +91,7 @@ namespace CardShop.Controllers
             return View(compra);
         }
 
-        // POST: Compras/Edit/5
+        // POST: Compra/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -128,7 +128,7 @@ namespace CardShop.Controllers
             return View(compra);
         }
 
-        // GET: Compras/Delete/5
+        // GET: Compra/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -148,7 +148,7 @@ namespace CardShop.Controllers
             return View(compra);
         }
 
-        // POST: Compras/Delete/5
+        // POST: Compra/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
@@ -167,14 +167,14 @@ namespace CardShop.Controllers
 
         //get comprar
 
-        public async Task<IActionResult> Comprar(Guid carritoid)
+        public async Task<IActionResult> Comprar(Guid? id)
         {
 
             var carrito = await _context.Carrito
-               .Include(c => c.CarritosItems)
+                .Include(c => c.CarritosItems)          
                    .ThenInclude(ci => ci.Producto)
-               .FirstOrDefaultAsync(m => m.CarritoId == carritoid);
-            List<CarritoItem> rej = new List<CarritoItem>();
+                .FirstOrDefaultAsync(m => m.CarritoId == id);
+                 List<CarritoItem> rej = new List<CarritoItem>();
 
 
 
@@ -183,13 +183,13 @@ namespace CardShop.Controllers
 
             var compra = new Compra();
             compra.CompraID = Guid.NewGuid();
-            compra.CarritoId = carritoid;
+           
             compra.Fecha = DateTime.Now;
 
 
 
             double tot = 0.00;
-            tot = carrito.Subtotal + ((carrito.Subtotal * 10) / 100);
+            //tot = carrito.Subtotal + ((carrito.Subtotal * 10) / 100);
 
             compra.Total = tot;
             compra.UsuarioId = carrito.UsuarioID;
@@ -203,10 +203,13 @@ namespace CardShop.Controllers
 
             compra.Carrito = carritoNuevo;
             compra.CarritoId = carritoNuevo.CarritoId;
+            compra.Estado = "En preparacion";
             _context.Carrito.Add(carritoNuevo);
             _context.Compra.Add(compra);
 
             carrito.CarritosItems.Clear();
+            
+            
             await _context.SaveChangesAsync();
 
 
@@ -216,7 +219,7 @@ namespace CardShop.Controllers
 
 
 
-                return RedirectToAction("Details", "Compras", new { id = compra.CompraID });
+                return RedirectToAction("CompraRealizada", "Carritos", new { id = compra.CompraID });
             }
         }
 }
