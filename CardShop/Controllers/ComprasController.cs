@@ -29,7 +29,7 @@ namespace CardShop.Controllers
 
         // GET: Compras del Cliente
         [Authorize(Roles = "USUARIO")]
-        public async Task<IActionResult> ComprasUsuario(Guid id)
+        public async Task<IActionResult> ComprasUsuario(Guid? id)
         {
             var cliente = _context.Usuario.FirstOrDefault(n => n.Id == id);
             ViewData["nombre"] = cliente.Nombre + " " + cliente.Apellido;
@@ -182,12 +182,14 @@ namespace CardShop.Controllers
         {
 
             var carrito = await _context.Carrito
-                .Include(c => c.CarritosItems)          
+                .Include(c => c.CarritosItems)         
                    .ThenInclude(ci => ci.Producto)
+
                 .FirstOrDefaultAsync(m => m.CarritoId == id);
                  List<CarritoItem> rej = new List<CarritoItem>();
 
-
+            var usuarioId = Guid.Parse(User.FindFirst("IdUsuario").Value);
+            var usuario = await _context.Usuario.SingleOrDefaultAsync(u => u.Id == usuarioId);
 
 
 
@@ -203,8 +205,8 @@ namespace CardShop.Controllers
             //tot = carrito.Subtotal + ((carrito.Subtotal * 10) / 100);
 
             compra.Total = tot;
-            compra.UsuarioId = carrito.UsuarioID;
-            compra.Usuario = carrito.Usuario;
+            compra.UsuarioId = usuarioId;
+            compra.Usuario = usuario;
             var carritoNuevo = new Carrito();
             carritoNuevo.CarritoId = Guid.NewGuid();
             carritoNuevo.CarritosItems = carrito.CarritosItems;
@@ -230,7 +232,7 @@ namespace CardShop.Controllers
 
 
 
-                return RedirectToAction("CompraRealizada", "Carritos", new { id = compra.CompraID });
+                return RedirectToAction("ComprasUsuario", "Compras", new { id = usuario.Id });
             }
         }
 }
