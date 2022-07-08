@@ -31,8 +31,8 @@ namespace CardShop.Controllers
         [Authorize(Roles = "USUARIO")]
         public async Task<IActionResult> ComprasUsuario(Guid? id)
         {
-            var cliente = _context.Usuario.FirstOrDefault(n => n.Id == id);
-            ViewData["nombre"] = cliente.Nombre + " " + cliente.Apellido;
+            var usuario = await _context.Usuario.SingleOrDefaultAsync(u => u.Id == id);
+
             var carritoComprasContext = _context.Compra.Include(c => c.Carrito).Include(c => c.Usuario).Where(n => n.UsuarioId == id);
             return View(await carritoComprasContext.ToListAsync());
         }
@@ -182,6 +182,7 @@ namespace CardShop.Controllers
         {
 
             var carrito = await _context.Carrito
+                
                 .Include(c => c.CarritosItems)         
                    .ThenInclude(ci => ci.Producto)
 
@@ -202,7 +203,11 @@ namespace CardShop.Controllers
 
 
             double tot = 0.00;
-            //tot = carrito.Subtotal + ((carrito.Subtotal * 10) / 100);
+            foreach (CarritoItem i in carrito.CarritosItems)
+            {
+                tot += (i.Cantidad * i.Producto.PrecioVigente);
+            }
+            tot = tot + ((tot * 10) / 100);
 
             compra.Total = tot;
             compra.UsuarioId = usuarioId;
@@ -232,7 +237,7 @@ namespace CardShop.Controllers
 
 
 
-                return RedirectToAction("Details", "Compras", new { id = compra.CompraID });
+                return RedirectToAction("ComprasUsuario", "Compras", new { id = compra.CompraID });
             }
         }
 }
