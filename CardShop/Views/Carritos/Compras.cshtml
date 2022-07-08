@@ -78,8 +78,8 @@
         }
     </tbody>
     <div>
-        <a asp-action="CarritoUsuario" asp-route-id="@Model.UsuarioID">Volve al Carrito</a>
+        <a asp-action="CarritoUsuario"  asp-route-id="@Model.UsuarioID">Volve al Carrito</a>
         <br />
-        <a asp-action="Cerrar" asp-route-id="@Model.CarritoId">Hacer compra</a>
+        <a asp-action="Comprar" asp-controller="Compras" asp-route-id="@Model.CarritoId">Hacer compra</a>
     </div>
 

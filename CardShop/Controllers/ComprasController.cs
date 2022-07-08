@@ -182,6 +182,7 @@ namespace CardShop.Controllers
         {
 
             var carrito = await _context.Carrito
+                
                 .Include(c => c.CarritosItems)         
                    .ThenInclude(ci => ci.Producto)
 
@@ -202,7 +203,11 @@ namespace CardShop.Controllers
 
 
             double tot = 0.00;
-            //tot = carrito.Subtotal + ((carrito.Subtotal * 10) / 100);
+            foreach (CarritoItem i in carrito.CarritosItems)
+            {
+                tot += (i.Cantidad * i.Producto.PrecioVigente);
+            }
+            tot = tot + ((tot * 10) / 100);
 
             compra.Total = tot;
             compra.UsuarioId = usuarioId;
