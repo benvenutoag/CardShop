@@ -68,7 +68,7 @@
         @if (Model != null && Model.CarritosItems != null)
         {
             @*<a asp-action="Cerrar" asp-controller="Carritos" asp-route-id="@Model.CarritoId">Comprar</a>*@
-            <a asp-action="PrepararCompra" asp-controller="Carritos" asp-route-id="@Model.CarritoId">Ir a Comprar</a>
+            <a asp-action="Comprar" asp-controller="Compras" asp-route-id="@Model.CarritoId">Ir a Comprar</a>
         }
 
     </tbody>

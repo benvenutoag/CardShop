@@ -39,7 +39,7 @@ namespace CardShop.Controllers
         }
         
 
-        //GET: Carritos/Compras/5
+        //GET: Carritos/Compra/5
         [Authorize(Roles = "USUARIO")]
         public async Task<IActionResult> Compras(Guid Id)
         {
@@ -51,7 +51,7 @@ namespace CardShop.Controllers
             return View(await carrito);
         }
 
-        //GET: Carritos/Compras/5
+        //GET: Carritos/Compra/5
         [Authorize(Roles = "USUARIO")]
         public async Task<IActionResult> CompraRealizada(Guid Id)
         {

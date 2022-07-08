@@ -30,6 +30,12 @@ namespace CardShop.Controllers
             return View(await _context.Usuario.ToListAsync());
         }
 
+        [Authorize(Roles = "ADMIN")]
+        public async Task<IActionResult> Estadisticas()
+        {
+            return View(await _context.Usuario.ToListAsync());
+        }
+
         // GET: Usuarios/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
