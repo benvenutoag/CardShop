@@ -4,11 +4,14 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Compras</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@if (User.IsInRole("ADMIN"))
+{
+    <p>
+        <a asp-action="Create">Crear Nueva Compra</a>
+    </p>
+}
 <table class="table">
     <thead>
         <tr>
@@ -31,7 +34,8 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @foreach (var item in Model)
+        {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Usuario.Id)
@@ -48,12 +52,26 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Estado)
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.CompraID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.CompraID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.CompraID">Delete</a>
-            </td>
+
+            @if (User.IsInRole("ADMIN"))
+            {
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.CompraID">Editar</a> |
+                    <a asp-action="Details" asp-route-id="@item.CompraID">Detalles</a> |
+                    <a asp-action="Delete" asp-route-id="@item.CompraID">Borrar</a>
+                </td>
+            }
+
+            else
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    <td><a asp-action="Details" asp-route-id="@item.CompraID">Detalles</a></td>
+
+
+                }
+            }
         </tr>
-}
+        }
     </tbody>
 </table>
