@@ -232,7 +232,7 @@ namespace CardShop.Controllers
 
 
 
-                return RedirectToAction("ComprasUsuario", "Compras", new { id = usuario.Id });
+                return RedirectToAction("Details", "Compras", new { id = compra.CompraID });
             }
         }
 }
