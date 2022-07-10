@@ -26,6 +26,14 @@
         <dd class="col-sm-10">
             $@Html.DisplayFor(model => model.Subtotal)
         </dd>
+        <dt class="col-sm-2">
+            Total (con envío)
+        </dt>
+        <dd class="col-sm-10">
+            $
+            @{var total = (Model.Subtotal * 1.10);}
+            @total.ToString()
+        </dd>
     </dl>
 </div>
 
@@ -78,7 +86,7 @@
         }
     </tbody>
     <div>
-        <a asp-action="CarritoUsuario"  asp-route-id="@Model.UsuarioID">Volve al Carrito</a>
+        <a asp-action="CarritoUsuario" asp-route-id="@Model.UsuarioID">Volve al Carrito</a>
         <br />
         <a asp-action="Comprar" asp-controller="Compras" asp-route-id="@Model.CarritoId">Hacer compra</a>
     </div>

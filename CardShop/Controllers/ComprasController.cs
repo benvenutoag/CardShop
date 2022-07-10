@@ -231,13 +231,7 @@ namespace CardShop.Controllers
             await _context.SaveChangesAsync();
 
 
-            
-
-
-
-
-
-                return RedirectToAction("ComprasUsuario", "Compras", new { id = compra.CompraID });
+                return RedirectToAction("ComprasUsuario", "Compras", new { id = compra.Carrito.UsuarioID });
             }
         }
 }
