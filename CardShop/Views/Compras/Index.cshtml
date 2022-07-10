@@ -18,9 +18,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Usuario)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Carrito)
-            </th>
+            
             <th>
                 @Html.DisplayNameFor(model => model.Total)
             </th>
@@ -38,11 +36,9 @@
         {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Usuario.Id)
+                @Html.DisplayFor(modelItem => item.Usuario.UserName)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Carrito.CarritoId)
-            </td>
+            
             <td>
                 $
                 @Html.DisplayFor(modelItem => item.Total)

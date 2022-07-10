@@ -167,6 +167,9 @@ namespace CardShop.Controllers
             var compra = await _context.Compra.FindAsync(id);
             _context.Compra.Remove(compra);
             await _context.SaveChangesAsync();
+            if (User.IsInRole("USUARIO")){
+                return RedirectToAction("ComprasUsuario", "Compras", new { id = compra.UsuarioId});
+            }
             return RedirectToAction(nameof(Index));
         }
 
