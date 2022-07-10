@@ -24,22 +24,33 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fecha)
+            </td>
+            
+            <td>
+                @Html.DisplayFor(modelItem => item.Usuario.UserName)
+            </td>
+            @*Forma de Cambiar el Estado de la Compra*@
+            @if (item.Fecha.Date != DateTime.Today)
+            {
                 <td>
-                    @Html.DisplayFor(modelItem => item.Fecha)
+                    Enviado
                 </td>
+
+            } else
+                {
                 <td>
-                    @Html.DisplayFor(modelItem => item.Usuario.UserName)
+                    En Preparación
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Estado)
-                </td>
+                }
                 <td>
                     $
                     @Html.DisplayFor(modelItem => item.Total)
                 </td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@item.CompraID">Details</a>
+                    <a asp-action="Details" asp-route-id="@item.CompraID">Details</a> |
                     @if (item.Estado.Equals("En preparacion"))
                     {
                         <a asp-action="Delete" asp-route-id="@item.CompraID">Cancelar Compra</a>
