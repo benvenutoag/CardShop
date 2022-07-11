@@ -226,7 +226,18 @@ namespace CardShop.Controllers
             _context.Compra.Add(compra);
 
             carrito.CarritosItems.Clear();
+            var estadistica = await _context.Estadistica.SingleOrDefaultAsync();
+
+            if (estadistica == null)
+            {
+                estadistica = new Estadistica();
+                estadistica.Id = 1;
+                estadistica.ListaCompras = new List<Compra>();
+            }
+                estadistica.ListaCompras.Add(compra);
+             
             
+           
             
             await _context.SaveChangesAsync();
 
