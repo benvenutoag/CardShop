@@ -270,5 +270,70 @@ namespace CardShop.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        public async Task<IActionResult> ConfirmarPedido(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var compra = await _context.Compra
+                .Include(c => c.Carrito)
+                .Include(c => c.Usuario)
+                .FirstOrDefaultAsync(m => m.CompraID == id);
+            if (compra == null)
+            {
+                return NotFound();
+            }
+
+            if (compra.Estado.Equals("Enviado"))
+            {
+                compra.Estado = "Entregado";
+            }
+            else
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            _context.Compra.Update(compra);
+
+            await _context.SaveChangesAsync();
+
+
+            return RedirectToAction(nameof(Index));
+        }
+        public async Task<IActionResult> ConfirmarEntrega(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var compra = await _context.Compra
+                .Include(c => c.Carrito)
+                .Include(c => c.Usuario)
+                .FirstOrDefaultAsync(m => m.CompraID == id);
+            if (compra == null)
+            {
+                return NotFound();
+            }
+
+            if (compra.Estado.Equals("Entregado"))
+            {
+                compra.Estado = "COMPRA RECIBIDA POR EL USUARIO " + compra.Usuario.UserName + " EL DIA " + DateTime.Now;
+            }
+            else
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            _context.Compra.Update(compra);
+
+            await _context.SaveChangesAsync();
+
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

@@ -44,6 +44,11 @@
                     {
                         <a asp-action="Delete" asp-route-id="@item.CompraID">Cancelar Compra</a>
                     }
+                    else if (item.Estado.Equals("Entregado"))
+                    {
+                        <a asp-action="ConfirmarEntrega" asp-route-id="@item.CompraID">Confirmar que recibiste el pedido</a>
+
+                    }
                 </td>
             </tr>
         }

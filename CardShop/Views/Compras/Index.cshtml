@@ -51,17 +51,21 @@
 
                 @if (User.IsInRole("ADMIN"))
                 {
-                    <td>
+            <td>
 
-                        <a asp-action="Edit" asp-route-id="@item.CompraID">Editar</a> |
-                        <a asp-action="Details" asp-route-id="@item.CompraID">Detalles</a> |
-                        <a asp-action="Delete" asp-route-id="@item.CompraID">Borrar</a>|
-                        @if (item.Estado.Equals("En preparacion"))
-                        {
-                            <a asp-action="EnviarPedido" asp-route-id="@item.CompraID">Enviar pedido</a>
-                        }
+                @*<a asp-action="Edit" asp-route-id="@item.CompraID">Editar</a> |*@
+                <a asp-action="Details" asp-route-id="@item.CompraID">Detalles</a> |
+                <a asp-action="Delete" asp-route-id="@item.CompraID">Borrar</a>|
+                @if (item.Estado.Equals("En preparacion"))
+                {
+                    <a asp-action="EnviarPedido" asp-route-id="@item.CompraID">Enviar pedido</a>
+                }
+                else if (item.Estado.Equals("Enviado"))
+                {
+            <a asp-action="ConfirmarPedido" asp-route-id="@item.CompraID">Confirmar pedido</a>
+                }
 
-                    </td>
+            </td>
                 }
 
                 else
