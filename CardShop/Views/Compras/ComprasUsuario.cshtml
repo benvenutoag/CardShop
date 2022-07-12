@@ -24,24 +24,33 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Fecha)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Usuario.UserName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Estado)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Total)
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.CompraID">Details</a>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fecha)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Usuario.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Estado)
+                </td>
+                <td>
+                    $
+                    @Html.DisplayFor(modelItem => item.Total)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.CompraID">Details</a>
+                    @if (item.Estado.Equals("En preparacion"))
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.CompraID">Cancelar Compra</a>
+                    }
+                    else if (item.Estado.Equals("Entregado"))
+                    {
+                        <a asp-action="ConfirmarEntrega" asp-route-id="@item.CompraID">Confirmar que recibiste el pedido</a>
 
-            </td>
-        </tr>
+                    }
+                </td>
+            </tr>
         }
     </tbody>
 </table>
