@@ -167,8 +167,9 @@ namespace CardShop.Controllers
             var compra = await _context.Compra.FindAsync(id);
             _context.Compra.Remove(compra);
             await _context.SaveChangesAsync();
-            if (User.IsInRole("USUARIO")){
-                return RedirectToAction("ComprasUsuario", "Compras", new { id = compra.UsuarioId});
+            if (User.IsInRole("USUARIO"))
+            {
+                return RedirectToAction("ComprasUsuario", "Compras", new { id = compra.UsuarioId });
             }
             return RedirectToAction(nameof(Index));
         }
@@ -185,12 +186,12 @@ namespace CardShop.Controllers
         {
 
             var carrito = await _context.Carrito
-                
-                .Include(c => c.CarritosItems)         
+
+                .Include(c => c.CarritosItems)
                    .ThenInclude(ci => ci.Producto)
 
                 .FirstOrDefaultAsync(m => m.CarritoId == id);
-                 List<CarritoItem> rej = new List<CarritoItem>();
+            List<CarritoItem> rej = new List<CarritoItem>();
 
             var usuarioId = Guid.Parse(User.FindFirst("IdUsuario").Value);
             var usuario = await _context.Usuario.SingleOrDefaultAsync(u => u.Id == usuarioId);
@@ -200,7 +201,7 @@ namespace CardShop.Controllers
 
             var compra = new Compra();
             compra.CompraID = Guid.NewGuid();
-           
+
             compra.Fecha = DateTime.Now;
 
 
@@ -229,12 +230,110 @@ namespace CardShop.Controllers
             _context.Compra.Add(compra);
 
             carrito.CarritosItems.Clear();
-            
-            
+
+
             await _context.SaveChangesAsync();
 
 
-                return RedirectToAction("ComprasUsuario", "Compras", new { id = compra.Carrito.UsuarioID });
-            }
+            return RedirectToAction("ComprasUsuario", "Compras", new { id = compra.Carrito.UsuarioID });
         }
+
+        public async Task<IActionResult> EnviarPedido(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var compra = await _context.Compra
+                .Include(c => c.Carrito)
+                .Include(c => c.Usuario)
+                .FirstOrDefaultAsync(m => m.CompraID == id);
+            if (compra == null)
+            {
+                return NotFound();
+            }
+
+            if (compra.Estado.Equals("En preparacion"))
+            {
+                compra.Estado = "Enviado";
+            }
+            else
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            _context.Compra.Update(compra);
+
+            await _context.SaveChangesAsync();
+
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> ConfirmarPedido(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var compra = await _context.Compra
+                .Include(c => c.Carrito)
+                .Include(c => c.Usuario)
+                .FirstOrDefaultAsync(m => m.CompraID == id);
+            if (compra == null)
+            {
+                return NotFound();
+            }
+
+            if (compra.Estado.Equals("Enviado"))
+            {
+                compra.Estado = "Entregado";
+            }
+            else
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            _context.Compra.Update(compra);
+
+            await _context.SaveChangesAsync();
+
+
+            return RedirectToAction(nameof(Index));
+        }
+        public async Task<IActionResult> ConfirmarEntrega(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var compra = await _context.Compra
+                .Include(c => c.Carrito)
+                .Include(c => c.Usuario)
+                .FirstOrDefaultAsync(m => m.CompraID == id);
+            if (compra == null)
+            {
+                return NotFound();
+            }
+
+            if (compra.Estado.Equals("Entregado"))
+            {
+                compra.Estado = "COMPRA RECIBIDA POR EL USUARIO " + compra.Usuario.UserName + " EL DIA " + DateTime.Now;
+            }
+            else
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            _context.Compra.Update(compra);
+
+            await _context.SaveChangesAsync();
+
+
+            return RedirectToAction(nameof(Index));
+        }
+    }
 }
