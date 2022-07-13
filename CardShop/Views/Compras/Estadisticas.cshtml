@@ -1,0 +1,41 @@
+﻿@model IEnumerable<CardShop.Models.Compra>
+
+@{
+    ViewData["Title"] = "Estadisticas";
+}
+
+<h1>Estadisticas</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fecha)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{ double total = 0;
+                foreach (var item in Model)
+            {
+                total += item.Total;
+            }
+        }
+        <tr>
+            <td>
+                $
+                @Html.DisplayFor(modelItem => total)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => DateTime.Now)
+            </td>
+
+        </tr>
+
+    </tbody>
+</table>
