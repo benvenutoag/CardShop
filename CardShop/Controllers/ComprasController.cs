@@ -191,7 +191,7 @@ namespace CardShop.Controllers
                    .ThenInclude(ci => ci.Producto)
 
                 .FirstOrDefaultAsync(m => m.CarritoId == id);
-            List<CarritoItem> rej = new List<CarritoItem>();
+            
 
             var usuarioId = Guid.Parse(User.FindFirst("IdUsuario").Value);
             var usuario = await _context.Usuario.SingleOrDefaultAsync(u => u.Id == usuarioId);
@@ -230,18 +230,8 @@ namespace CardShop.Controllers
             _context.Compra.Add(compra);
 
             carrito.CarritosItems.Clear();
-            var estadistica = await _context.Estadistica.SingleOrDefaultAsync();
-
-            if (estadistica == null)
-            {
-                estadistica = new Estadistica();
-                estadistica.Id = 1;
-                estadistica.ListaCompras = new List<Compra>();
-            }
-                estadistica.ListaCompras.Add(compra);
-             
             
-           
+         
             
 
 

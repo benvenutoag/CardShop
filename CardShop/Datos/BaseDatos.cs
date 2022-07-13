@@ -25,6 +25,6 @@ namespace CardShop.Datos
 
         public DbSet<Compra> Compra { get; set; }
 
-        public DbSet<CardShop.Models.Estadistica> Estadistica { get; set; }
+
     }
 }
