@@ -199,7 +199,7 @@ namespace CardShop.Controllers
                    .ThenInclude(ci => ci.Producto)
 
                 .FirstOrDefaultAsync(m => m.CarritoId == id);
-            List<CarritoItem> rej = new List<CarritoItem>();
+           
 
             var usuarioId = Guid.Parse(User.FindFirst("IdUsuario").Value);
             var usuario = await _context.Usuario.SingleOrDefaultAsync(u => u.Id == usuarioId);
