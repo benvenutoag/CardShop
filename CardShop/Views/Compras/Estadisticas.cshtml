@@ -1,59 +1,16 @@
-<<<<<<< HEAD
-﻿@model CardShop.Models.Compra
-=======
-﻿@model IEnumerable<CardShop.Models.Compra>
+@model IEnumerable<CardShop.Models.Compra>
 
 @{
     ViewData["Title"] = "Estadisticas";
 }
 
 <h1>Estadisticas</h1>
->>>>>>> branch-lean
 
 
 <table class="table">
     <thead>
         <tr>
             <th>
-<<<<<<< HEAD
-                Cantidad de Postres Vendidos
-            </th>
-
-            <th>
-                Cantidad de Bebidas Vendidas
-            </th>
-
-            <th>
-                Cantidad de Comidas Vendidas
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        
-
-        @{var cantPostre = 0;
-            var cantComida = 0;
-            var cantBebida = 0;
-
-            foreach (var item in Model.Carrito.CarritosItems)
-            {
-                foreach (var p in item.Producto.Categoria)
-                {
-                    if (p.Equals("Postre"))
-                    {
-                        cantPostre += item.Cantidad;
-                    }
-                    if (p.Equals("Comida"))
-                    {
-                        cantComida += item.Cantidad;
-                    }
-                    if (p.Equals("cantBebida"))
-                    {
-                        cantBebida += item.Cantidad;
-                    }
-                }
-
-=======
                 @Html.DisplayNameFor(model => model.Total)
             </th>
             <th>
@@ -67,36 +24,10 @@
                 foreach (var item in Model)
             {
                 total += item.Total;
->>>>>>> branch-lean
             }
         }
         <tr>
             <td>
-<<<<<<< HEAD
-                @cantPostre.ToString()
-            </td>
-            <td>
-                @cantBebida.ToString()
-            </td>
-            <td>
-                @cantComida.ToString()
-            </td>
-        </tr>
-</tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-=======
                 $
                 @Html.DisplayFor(modelItem => total)
             </td>
@@ -108,4 +39,3 @@
 
     </tbody>
 </table>
->>>>>>> branch-lean
