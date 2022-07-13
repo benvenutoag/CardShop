@@ -1,10 +1,21 @@
+<<<<<<< HEAD
 ﻿@model CardShop.Models.Compra
+=======
+﻿@model IEnumerable<CardShop.Models.Compra>
+
+@{
+    ViewData["Title"] = "Estadisticas";
+}
+
+<h1>Estadisticas</h1>
+>>>>>>> branch-lean
 
 
 <table class="table">
     <thead>
         <tr>
             <th>
+<<<<<<< HEAD
                 Cantidad de Postres Vendidos
             </th>
 
@@ -42,10 +53,26 @@
                     }
                 }
 
+=======
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fecha)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{ double total = 0;
+                foreach (var item in Model)
+            {
+                total += item.Total;
+>>>>>>> branch-lean
             }
         }
         <tr>
             <td>
+<<<<<<< HEAD
                 @cantPostre.ToString()
             </td>
             <td>
@@ -69,3 +96,16 @@
 
 
 
+=======
+                $
+                @Html.DisplayFor(modelItem => total)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => DateTime.Now)
+            </td>
+
+        </tr>
+
+    </tbody>
+</table>
+>>>>>>> branch-lean

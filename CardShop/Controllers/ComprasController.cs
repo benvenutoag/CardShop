@@ -27,6 +27,14 @@ namespace CardShop.Controllers
             return View(await baseDatos.ToListAsync());
         }
 
+        [Authorize(Roles = "ADMIN")]
+        public async Task<IActionResult> Estadisticas()
+        {
+            var baseDatos = _context.Compra.Include(c => c.Carrito).Include(c => c.Usuario);
+            return View(await baseDatos.ToListAsync());
+
+        }
+
         // GET: Compras del Cliente
         [Authorize(Roles = "USUARIO")]
         public async Task<IActionResult> ComprasUsuario(Guid? id)
