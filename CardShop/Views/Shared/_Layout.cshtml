@@ -50,9 +50,10 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Compras" asp-action="Index">Compras</a>
                             </li>
-                            @*<li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Carritos" asp-action="Index">Carrito</a>
-            </li>*@
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Compras" asp-action="Estadisticas">Estadisticas</a>
+                            </li>
+
                         }
                         else if (User.Identity.IsAuthenticated)
                         {
