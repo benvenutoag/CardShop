@@ -5,6 +5,7 @@
 }
 
 <h1>Estadisticas</h1>
+<h2>Total Recuadado hasta el momento</h2>
 
 
 <table class="table">
@@ -21,7 +22,7 @@
     </thead>
     <tbody>
         @{ double total = 0;
-                foreach (var item in Model)
+            foreach (var item in Model)
             {
                 total += item.Total;
             }
