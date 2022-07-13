@@ -6,7 +6,7 @@
 
 <h1>Estadisticas</h1>
 
-
+<h2> Vendido hasta la fecha</h2>
 <table class="table">
     <thead>
         <tr>
@@ -21,7 +21,7 @@
     </thead>
     <tbody>
         @{ double total = 0;
-                foreach (var item in Model)
+            foreach (var item in Model)
             {
                 total += item.Total;
             }
@@ -30,6 +30,81 @@
             <td>
                 $
                 @Html.DisplayFor(modelItem => total)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => DateTime.Now)
+            </td>
+
+        </tr>
+
+    </tbody>
+</table>
+<h2>Estado Pedidos</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Pedidos en preparación
+            </th>
+            <th>
+                Pedidos enviados
+            </th>
+            <th>
+                Pedidos entregados
+            </th>
+            <th>
+                Pedidos confirmados por el usuarios
+            </th>
+            <th>
+                Total pedidos
+            </th>
+            <th>
+                Fecha actual
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{ int enPreparacion = 0;
+            int enviado = 0;
+            int entregado = 0;
+            int recibido = 0;
+            int cantTotalPedidos = 0;
+            foreach (var item in Model)
+            {
+                cantTotalPedidos = Model.Count();
+                if (item.Estado.Equals("En preparacion"))
+                {
+                    enPreparacion++;
+                }
+                else if (item.Estado.Equals("Enviado"))
+                {
+                    enviado++;
+                }
+                else if (item.Estado.Equals("Entregado"))
+                {
+                    entregado++;
+                }
+                else
+                {
+                    recibido++;
+                }
+            }
+        }
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => enPreparacion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => enviado)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => entregado)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => recibido)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => cantTotalPedidos)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => DateTime.Now)
