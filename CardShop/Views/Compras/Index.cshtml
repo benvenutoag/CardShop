@@ -22,6 +22,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Total)
             </th>
+            <th></th>
             <th>
                 @Html.DisplayNameFor(model => model.Fecha)
             </th>
@@ -38,7 +39,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Usuario.UserName)
                 </td>
-                <td>
+                <td colspan="2">
                     $
                     @Html.DisplayFor(modelItem => item.Total)
                 </td>

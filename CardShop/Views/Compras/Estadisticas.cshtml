@@ -5,25 +5,27 @@
 }
 
 <h1>Estadisticas</h1>
-
-<h2> Vendido hasta la fecha</h2>
-<table class="table">
+<br />
+<h2> Ventas confirmadas hasta la fecha</h2>
+<table class="table" style="border:dashed">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Total)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Fecha)
+                Fecha Actual
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
         @{ double total = 0;
             foreach (var item in Model)
             {
-                total += item.Total;
+                if (!item.Estado.Equals("En preparacion"))
+                {
+                    total += item.Total;
+                }
             }
         }
         <tr>
@@ -40,7 +42,7 @@
     </tbody>
 </table>
 <h2>Estado Pedidos</h2>
-<table class="table">
+<table class="table" style="border:dashed">
     <thead>
         <tr>
             <th>
@@ -59,7 +61,7 @@
                 Total pedidos
             </th>
             <th>
-                Fecha actual
+                Fecha Actual
             </th>
         </tr>
     </thead>
@@ -110,6 +112,86 @@
                 @Html.DisplayFor(modelItem => DateTime.Now)
             </td>
 
+        </tr>
+
+    </tbody>
+</table>
+
+<h2> Compra más cara</h2>
+<table class="table" style="border:dashed">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Usuario)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+            <th>
+                Fecha de la compra
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @{ double masGasto = 0;
+            string usuarioMasGasto = "";
+            DateTime fechaQueLoHizo = DateTime.Now;
+            foreach (var item in Model)
+            {
+                if (item.Total > masGasto)
+                    masGasto = item.Total;
+                usuarioMasGasto = item.Usuario.UserName;
+                fechaQueLoHizo = item.Fecha;
+            }
+        }
+        <tr>
+            <td>
+
+                @Html.DisplayFor(modelItem => usuarioMasGasto)
+            <td>
+                $
+                @Html.DisplayFor(modelItem => masGasto)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => fechaQueLoHizo)
+            </td>
+
+        </tr>
+
+    </tbody>
+</table>
+
+<h2> Usuarios registrados que realizaron una compra</h2>
+<table class="table" style="border:dashed">
+    <thead>
+        <tr>
+            <th>
+                Cantidad de usuarios
+            </th>
+            <th>
+                Fecha actual
+            </th>
+
+
+        </tr>
+    </thead>
+    <tbody>
+        @{ List<Usuario> usuarios = new List<Usuario>();
+            foreach (var item in Model)
+            {
+                if (!usuarios.Contains(item.Usuario))
+                {
+                    usuarios.Add(item.Usuario);
+                }
+            }
+        }
+        <tr>
+            <td>
+                @usuarios.Count()
+            <td>
+                @Html.DisplayFor(modelItem => DateTime.Now)
+            </td>
         </tr>
 
     </tbody>
