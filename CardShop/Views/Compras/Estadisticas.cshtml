@@ -39,3 +39,17 @@
 
     </tbody>
 </table>
+
+
+@{ foreach (var item in Model)
+    {
+        foreach (var i in item.Carrito.CarritosItems)
+        {
+            var coso = "";
+
+            coso = i.Producto.Categoria;
+    <h2>coso</h2>
+        }
+    }
+}
+
